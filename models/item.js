@@ -1,8 +1,8 @@
-require('mongoose');
+const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const itemSchema = new Schema({
+const ItemSchema = new Schema({
     name: String,
     description: String,
     category: String,
@@ -10,8 +10,8 @@ const itemSchema = new Schema({
     stock: Number,
 });
 
-itemSchema.virtual('url').get(function() {
+ItemSchema.virtual('url').get(function() {
     return `/categories/${this.category}/${this._id}`;
 });
 
-module.exports = mongoose.model('item', itemSchema)
+module.exports = mongoose.model('Item', ItemSchema)
