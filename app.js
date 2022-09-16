@@ -7,7 +7,14 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+const mongoose = require('mongoose');
+
 var app = express();
+
+const mongoDB = 'mongodb+srv://dwk:dwkblue51@inventory.xvezoel.mongodb.net/?retryWrites=true&w=majority';
+mongoose.connect(mongoDB, {useNewURLParser: true, useUnifiedTopology: true});
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
