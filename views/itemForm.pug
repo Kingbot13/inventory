@@ -7,3 +7,12 @@ block content
     input#name(type='text' name='name' value=(undefined===item ? "" : item.name))
     label(for='description') Description: 
     input#description(type='text' name='description' value=(undefined===item ? "" : item.description))
+      div 
+        label categories: 
+        div   
+          each val in categories 
+            input(type='checkbox', name=val.name, id=val.name, value=val.name, checked=val.checked)
+    label(for='price') Price: 
+    input#price(type='number', name='price', value=(undefined===item ? 0 : item.price))
+    label(for='stock')
+    input#stock(type='number', name='stock', value=(undefined===item ? 0 : item.stock))
