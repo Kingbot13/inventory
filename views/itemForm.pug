@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1=title
+  form(method='post', action='')
+    label(for='name') Name: 
+    input#name(type='text' name='name' value=(undefined===item ? "" : item.name))
+    label(for='description') Description: 
+    input#description(type='text' name='description' value=(undefined===item ? "" : item.description))

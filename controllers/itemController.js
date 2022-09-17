@@ -1,4 +1,5 @@
 const Item = require('../models/item');
+const {body, validationResult} = require('express-validator');
 
 // get all items
 exports.itemsList = function (req, res, next) {
@@ -30,3 +31,10 @@ exports.itemDetail = function (req, res, next) {
         });
     })
 }
+
+// display item form
+exports.itemCreateGet = function(req, res, next) {
+    res.render('itemForm', {title: 'Create Item'});
+}
+
+// handle item form on post
