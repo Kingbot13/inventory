@@ -93,3 +93,64 @@ exports.categoryCreatePost = [
     }
   },
 ];
+
+exports.categoryDeleteGet = (req, res, next) => {
+  async.parallel(
+    {
+      category(callback) {
+        Category.find({ name: req.params.name }).exec(callback);
+      },
+      categoryItems(callback) {
+        Item.find({ category: req.params.name }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.category === null) {
+        // no results
+        res.redirect("/categories");
+      }
+      // successful
+      res.render("categoryDelete", {
+        title: "Delete category",
+        category: results.category,
+        categoryItems: results.categoryItems,
+      });
+    }
+  );
+};
+
+exports.categoryDeletePost = (req, res, next) => {
+  async.parallel(
+    {
+      category(callback) {
+        Category.find({ name: req.params.name }).exec(callback);
+      },
+      categoryItems(callback) {
+        Item.find({ category: req.params.name }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.categoryItems.length > 0) {
+        res.render("categoryDelete", {
+          title: "Delete category",
+          category: results.category,
+          categoryItems: results.categoryItems,
+        });
+        return;
+      }
+      // category has no items so delete
+      Category.findOneAndRemove({ name: req.params.name }, (err) => {
+        if (err) {
+          return next(err);
+        }
+        res.redirect("/categories");
+      });
+    }
+  );
+};
