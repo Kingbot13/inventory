@@ -42,3 +42,8 @@ exports.categoryDetail = function (req, res, next) {
     }
   );
 };
+
+// display category form
+exports.categoryCreateGet = function (req, res, next) {
+  res.render("categoryForm", { title: "Create category" });
+};

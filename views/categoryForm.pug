@@ -1,0 +1,10 @@
+extends layout 
+
+block content   
+    h1=title 
+    form(method='post' action='')
+        label(for='name') Name: 
+        input#name(type='text' name='name' value=(undefined===category ? "" : category.name) )
+        label(for='description') Description: 
+        textarea#description(name='name' value=(undefined===category ? "" : category.description))
+        button(type='submit') Submit
