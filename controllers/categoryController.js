@@ -1,4 +1,5 @@
 const async = require("async");
+const { body, validationResult } = require("express-validator");
 const Category = require("../models/category");
 const Item = require("../models/item");
 
@@ -47,3 +48,48 @@ exports.categoryDetail = function (req, res, next) {
 exports.categoryCreateGet = function (req, res, next) {
   res.render("categoryForm", { title: "Create category" });
 };
+
+// handle category form on post
+exports.categoryCreatePost = [
+  // validate and sanitize
+  body("name")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Category name must be specified"),
+  body("description", "Description must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    const category = new Category({
+      name: req.body.name,
+      description: req.body.description,
+    });
+    if (!errors.isEmpty()) {
+      res.render("categoryForm", {
+        title: "Create category",
+        category,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      Category.findOne({ name: req.body.name }).exec((err, foundCategory) => {
+        if (err) {
+          return next(err);
+        }
+        if (foundCategory) {
+          res.redirect(foundCategory.url);
+        } else {
+          category.save((err) => {
+            if (err) {
+              return next(err);
+            }
+            res.redirect(category.url);
+          });
+        }
+      });
+    }
+  },
+];
