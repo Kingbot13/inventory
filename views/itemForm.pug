@@ -11,7 +11,7 @@ block content
       label categories: 
       div   
         each val in categories 
-          input(type='checkbox', name=val.name, id=val.name, value=val.name, checked=val.checked)
+          input(type='checkbox', name='category', id=val.name, value=val.name, checked=val.checked)
           label(for=val.name) #{val.name}
     label(for='price') Price: 
     input#price(type='number', name='price', value=(undefined===item ? 0 : item.price))
