@@ -2,6 +2,8 @@ extends layout
 
 block content 
     h1= title 
+    a(href='/create-category')
+        button Add category
     ul
         each val in categoriesList 
             li
