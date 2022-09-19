@@ -122,7 +122,7 @@ exports.itemDeleteGet = (req, res, next) => {
 };
 
 exports.itemDeletePost = (req, res, next) => {
-  Item.findByIdAndRemove(req.params.id, (err) => {
+  Item.findByIdAndRemove(req.body.itemId, (err) => {
     if (err) {
       return next(err);
     }

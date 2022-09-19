@@ -1,0 +1,7 @@
+extends layout 
+
+block content 
+    h1 Delete #{item.name} 
+    form(method='post' action='')
+        input#itemId(type="hidden" name='itemId' required='true' value=item._id)
+        button(type='submit') Delete
