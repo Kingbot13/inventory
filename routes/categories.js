@@ -17,6 +17,10 @@ router.post("/:name/update", category.categoryUpdatePost);
 
 router.get("/:category/:id", item.itemDetail);
 
+router.get("/:category/:id/update", item.itemUpdateGet);
+
+router.post("/:category/:id/update", item.itemUpdatePost);
+
 router.get("/:category/:id/delete", item.itemDeleteGet);
 
 router.post("/:category/:id/delete", item.itemDeletePost);

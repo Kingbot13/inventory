@@ -129,3 +129,52 @@ exports.itemDeletePost = (req, res, next) => {
     res.redirect("/categories");
   });
 };
+
+exports.itemUpdateGet = (req, res, next) => {
+  Item.findById(req.params.id).exec((err, foundItem) => {
+    if (err) {
+      return next(err);
+    }
+    if (!foundItem) {
+      res.redirect("/categories");
+    }
+    res.render("itemForm", {
+      title: "Update item",
+      item: foundItem,
+    });
+  });
+};
+
+exports.itemUpdatePost = [
+  body("name", "name must not be empty").trim().isLength({ min: 1 }).escape(),
+  body("description", "description must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    const item = new Item({
+      name: req.body.name,
+      description: req.body.description,
+      category: req.body.category,
+      price: req.body.price,
+      stock: req.body.stock,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      res.render("itemForm", {
+        title: "Update item",
+        item,
+        errors: errors.array(),
+      });
+    }
+    // successful and no errors
+    Item.findByIdAndUpdate(item._id, item, {}, (err, theItem) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect(theItem.url);
+    });
+  },
+];
