@@ -8,3 +8,7 @@ block content
     p category: #{item.category}
     p price: $#{item.price}
     p stock: #{item.stock}
+  a(href=item.url+'/update')
+    button Update 
+  a(href=item.url+'/delete')
+    button Delete
