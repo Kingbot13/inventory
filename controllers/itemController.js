@@ -131,18 +131,32 @@ exports.itemDeletePost = (req, res, next) => {
 };
 
 exports.itemUpdateGet = (req, res, next) => {
-  Item.findById(req.params.id).exec((err, foundItem) => {
-    if (err) {
-      return next(err);
+  async.parallel(
+    {
+      item(callback) {
+        Item.findById(req.params.id).exec(callback);
+      },
+      categories(callback) {
+        Category.find().exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      for (const category of results.categories) {
+        if (results.item.category.includes(category.name)) {
+          category.checked = "true";
+        }
+      }
+      //successful
+      res.render("itemForm", {
+        title: "Update item",
+        item: results.item,
+        categories: results.categories,
+      });
     }
-    if (!foundItem) {
-      res.redirect("/categories");
-    }
-    res.render("itemForm", {
-      title: "Update item",
-      item: foundItem,
-    });
-  });
+  );
 };
 
 exports.itemUpdatePost = [

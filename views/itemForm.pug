@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1=title
+  h1 #{title}: #{item.name}
   form(method='post', action='')
     label(for='name') Name: 
     input#name(type='text' name='name' value=(undefined===item ? "" : item.name))
