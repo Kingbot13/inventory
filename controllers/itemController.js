@@ -2,6 +2,7 @@ const Item = require("../models/item");
 const Category = require("../models/category");
 const { body, validationResult } = require("express-validator");
 const async = require("async");
+const item = require("../models/item");
 
 // get all items
 exports.itemsList = function (req, res, next) {
@@ -102,3 +103,29 @@ exports.itemCreatePost = [
     });
   },
 ];
+
+exports.itemDeleteGet = (req, res, next) => {
+  Item.findById(req.params.id).exec((err, foundItem) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (!foundItem) {
+      res.redirect("/categories");
+    }
+    // successful
+    res.render("itemDelete", {
+      title: "Delete item",
+      item: foundItem,
+    });
+  });
+};
+
+exports.itemDeletePost = (req, res, next) => {
+  Item.findByIdAndRemove(req.params.id, (err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/categories");
+  });
+};

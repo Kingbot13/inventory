@@ -13,4 +13,8 @@ router.post("/:name/delete", category.categoryDeletePost);
 
 router.get("/:category/:id", item.itemDetail);
 
+router.get("/:category/:id/delete", item.itemDeleteGet);
+
+router.post("/:category/:id/delete", item.itemDeletePost);
+
 module.exports = router;
