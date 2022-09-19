@@ -154,3 +154,51 @@ exports.categoryDeletePost = (req, res, next) => {
     }
   );
 };
+
+exports.categoryUpdateGet = (req, res, next) => {
+  Category.findOne({ name: req.params.name }).exec((err, foundCategory) => {
+    if (err) {
+      return next(err);
+    }
+    if (!foundCategory) {
+      res.redirect("/categories");
+    }
+    res.render("categoryUpdate", {
+      title: "Update item",
+      category: foundCategory,
+    });
+  });
+};
+
+exports.categoryUpdatePost = [
+  body("name", "name must not be empty").trim().isLength({ min: 1 }).escape(),
+  body("description", "description must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    Category.findOne({ name: req.params.name }).exec((err, foundCategory) => {
+      if (err) {
+        return next(err);
+      }
+      const category = new Category({
+        name: req.body.name,
+        description: req.body.description,
+        _id: foundCategory._id,
+      });
+
+      Category.findOneAndUpdate(
+        { name: foundCategory.name },
+        category,
+        {},
+        (err, theCategory) => {
+          if (err) {
+            return next(err);
+          }
+          res.redirect(theCategory.url);
+        }
+      );
+    });
+  },
+];
