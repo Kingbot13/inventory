@@ -163,7 +163,7 @@ exports.categoryUpdateGet = (req, res, next) => {
     if (!foundCategory) {
       res.redirect("/categories");
     }
-    res.render("categoryUpdate", {
+    res.render("categoryForm", {
       title: "Update item",
       category: foundCategory,
     });

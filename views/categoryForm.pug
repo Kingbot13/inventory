@@ -6,5 +6,5 @@ block content
         label(for='name') Name: 
         input#name(type='text' name='name' value=(undefined===category ? "" : category.name) )
         label(for='description') Description: 
-        textarea#description(name='name' value=(undefined===category ? "" : category.description))
+        textarea#description(name='description' type='text' value=(undefined===category ? "" : category.description))
         button(type='submit') Submit
